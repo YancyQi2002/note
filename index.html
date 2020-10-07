@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>记事本</title>
+		<style>
+			#todoapp {
+				margin: 10px auto;
+				width: 500px;
+			}
+			h1 {
+				text-align: center;
+			}
+			ul {
+				list-style-type: none;
+			}
+			.header {
+				padding: 4px;
+				background-color: #ccc;
+			}
+			.main {
+				padding: 4px;
+				background-color: #ddd;
+			}
+			.footer {
+				padding: 4px;
+				background-color: #eee;
+			}
+			.view {
+				margin: 5px;
+			}
+			.active {
+				color: tomato;
+			}
+		</style>
+		<script src="./js/vue.js"></script>
+	</head>
+	<body>
+		<!-- 主体区域 -->
+		<section id="todoapp">
+			<!-- 输入框 -->
+			<header class="header">
+				<h1>记事本</h1>
+				<input v-model="inputValue" @keyup="add" autofocus="autofocus" autocomplete="off" placeholder="请输入任务" />
+			</header>
+			<!-- 列表区域 -->
+			<section class="main">
+				<ul class="todo-list">
+					<li class="todo" v-for="(item,index) in list" :class="{active:currentIndex === index}" @click="liClick(index)">
+						<div class="view">
+							<span class="index">{{index+1}}.</span>
+							<label>{{item}}</label>
+							<button @click="remove(index)">删除</button>
+						</div>
+					</li>
+				</ul>
+			</section>
+			<!-- 统计和清空 -->
+			<footer class="footer">
+				<span v-if="list.length != 0">
+					<strong>{{list.length}}</strong>
+					"items left"
+				</span>
+				<button v-show="list.length != 0" @click="clear">
+					Clear
+				</button>
+			</footer>
+		</section>
+		
+		<script>
+			var app = new Vue({
+				// 唯一的根数据
+				el: "#todoapp",
+				data: {
+					list:["吃饭","学习","睡觉"],
+					inputValue:"好好学习，天天向上",
+					currentIndex: 0
+				},
+				methods: {
+					add:function(){
+						this.list.push(this.inputValue);
+					},
+					remove:function(index){
+						this.list.splice(index,1);
+					},
+					clear:function(){
+						this.list = [];
+					},
+					liClick(index){
+						this.currentIndex = index;
+					}
+				},
+			})
+		</script>
+	</body>
+</html>
